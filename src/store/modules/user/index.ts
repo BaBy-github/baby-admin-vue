@@ -27,7 +27,7 @@ const useUserStore = defineStore('user', {
     registrationDate: undefined,
     accountId: undefined,
     certification: undefined,
-    role: '',
+    roles: [],
   }),
 
   getters: {
@@ -37,12 +37,12 @@ const useUserStore = defineStore('user', {
   },
 
   actions: {
-    switchRoles() {
-      return new Promise((resolve) => {
-        this.role = this.role === 'user' ? 'admin' : 'user';
-        resolve(this.role);
-      });
-    },
+    // switchRoles() {
+    //   return new Promise((resolve) => {
+    //     this.role = this.role === 'user' ? 'admin' : 'user';
+    //     resolve(this.role);
+    //   });
+    // },
     // Set user's information
     setInfo(partial: Partial<UserState>) {
       this.$patch(partial);

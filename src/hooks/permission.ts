@@ -5,11 +5,17 @@ export default function usePermission() {
   const userStore = useUserStore();
   return {
     accessRouter(route: RouteLocationNormalized | RouteRecordRaw) {
+      const checkUserRolesIncludesRole = (
+        checkRoles: string[],
+        userRoles: string[]
+      ) => {
+        return userRoles.some((role) => checkRoles.includes(role));
+      };
       return (
         !route.meta?.requiresAuth ||
         !route.meta?.roles ||
         route.meta?.roles?.includes('*') ||
-        route.meta?.roles?.includes(userStore.role)
+        checkUserRolesIncludesRole(route.meta?.roles, userStore.roles)
       );
     },
     findFirstPermissionRoute(_routers: any, role = 'admin') {

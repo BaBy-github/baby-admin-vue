@@ -32,7 +32,7 @@ setupMock({
           registrationDate: '2013-05-10 12:10:00',
           accountId: '15012312300',
           certification: 1,
-          role,
+          roles: ['admin', 'user'],
         });
       }
       return failResponseWrap(null, '未登录', 50008);
@@ -68,38 +68,38 @@ setupMock({
     // });
 
     // 用户的服务端菜单
-    Mock.mock(new RegExp('/api/user/menu'), () => {
-      const menuList = [
-        {
-          path: '/dashboard',
-          name: 'dashboard',
-          meta: {
-            locale: 'menu.server.dashboard',
-            requiresAuth: true,
-            icon: 'icon-dashboard',
-            order: 1,
-          },
-          children: [
-            {
-              path: 'workplace',
-              name: 'Workplace',
-              meta: {
-                locale: 'menu.server.workplace',
-                requiresAuth: true,
-              },
-            },
-            {
-              path: 'https://arco.design',
-              name: 'arcoWebsite',
-              meta: {
-                locale: 'menu.arcoWebsite',
-                requiresAuth: true,
-              },
-            },
-          ],
-        },
-      ];
-      return successResponseWrap(menuList);
-    });
+    // Mock.mock(new RegExp('/api/user/menu'), () => {
+    //   const menuList = [
+    //     {
+    //       path: '/dashboard',
+    //       name: 'dashboard',
+    //       meta: {
+    //         locale: 'menu.server.dashboard',
+    //         requiresAuth: true,
+    //         icon: 'icon-dashboard',
+    //         order: 1,
+    //       },
+    //       children: [
+    //         {
+    //           path: 'menu',
+    //           name: 'Workplace',
+    //           meta: {
+    //             locale: 'menu.server.menu',
+    //             requiresAuth: true,
+    //           },
+    //         },
+    //         {
+    //           path: 'https://arco.design',
+    //           name: 'arcoWebsite',
+    //           meta: {
+    //             locale: 'menu.arcoWebsite',
+    //             requiresAuth: true,
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   ];
+    //   return successResponseWrap(menuList);
+    // });
   },
 });

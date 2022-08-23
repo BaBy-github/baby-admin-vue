@@ -15,5 +15,5 @@ export interface UserState {
   registrationDate?: string;
   accountId?: string;
   certification?: number;
-  role: RoleType;
+  roles: string[]; // 角色数组
 }
