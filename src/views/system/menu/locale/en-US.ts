@@ -15,6 +15,8 @@ export default {
   'menuSearch.searchTable.form.reset': 'Reset',
   'menuSearch.searchTable.form.selectDefault': 'All',
   'menuSearch.searchTable.operation.create': 'Create',
+  'menuSearch.searchTable.operation.selectShowingColumn':
+    'Select Showing Column',
   // 'menuSearch.searchTable.operation.import': 'Import',
   // 'menuSearch.searchTable.operation.download': 'Download',
   // columns

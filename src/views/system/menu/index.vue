@@ -112,6 +112,20 @@
           <!--            </template>-->
           <!--            {{ $t('searchTable.operation.download') }}-->
           <!--          </a-button>-->
+          <a-popover position="lt">
+            <a-button class="button">
+              {{ $t('menuSearch.searchTable.operation.selectShowingColumn') }}
+            </a-button>
+            <template #content>
+              <a-checkbox-group
+                v-model="columnsSelectedList"
+                direction="vertical"
+                :options="columnsCheckboxOptions"
+                @change="onColumnsCheckboxChange"
+              >
+              </a-checkbox-group>
+            </template>
+          </a-popover>
         </a-col>
       </a-row>
       <!-- 数据列表-->
@@ -128,28 +142,33 @@
         <template #columns>
           <!-- menu id-->
           <a-table-column
+            v-if="columnsSelectedList.includes('id')"
             :sortable="{ sortDirections: ['ascend', 'descend'] }"
             :title="$t('menuSearch.searchTable.columns.id')"
             data-index="id"
           />
           <!-- menu name名称-->
           <a-table-column
+            v-if="columnsSelectedList.includes('name')"
             :title="$t('menuSearch.searchTable.columns.name')"
             data-index="name"
           />
           <!-- metaStr-->
           <a-table-column
+            v-if="columnsSelectedList.includes('metaStr')"
             :title="$t('menuSearch.searchTable.columns.metaStr')"
             data-index="metaStr"
           />
           <!-- parentId-->
           <a-table-column
+            v-if="columnsSelectedList.includes('parentId')"
             :sortable="{ sortDirections: ['ascend', 'descend'] }"
             :title="$t('menuSearch.searchTable.columns.parentId')"
             data-index="parentId"
           />
           <!-- status-->
           <a-table-column
+            v-if="columnsSelectedList.includes('status')"
             :title="$t('menuSearch.searchTable.columns.status')"
             data-index="status"
           >
@@ -161,6 +180,7 @@
           </a-table-column>
           <!-- operations-->
           <a-table-column
+            v-if="columnsSelectedList.includes('operations')"
             :title="$t('menuSearch.searchTable.columns.operations')"
             data-index="operations"
           >
@@ -183,7 +203,26 @@
   import { queryMenuList, MenuRecord, MenuParams } from '@/api/menu';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
-
+  // 列对象
+  const columnsSelectedList = ref<string[]>([
+    'id',
+    'name',
+    'metaStr',
+    'parentId',
+    'status',
+    'operations',
+  ]);
+  const columnsCheckboxOptions = [
+    { label: 'id', value: 'id' },
+    { label: 'name', value: 'name' },
+    { label: 'meta config', value: 'metaStr' },
+    { label: 'parentId', value: 'parentId' },
+    { label: 'status', value: 'status' },
+    { label: 'operations', value: 'operations' },
+  ];
+  const onColumnsCheckboxChange = (value: string[]) => {
+    columnsSelectedList.value = value;
+  };
   // 初始化查询表单信息
   const generateFormModel = () => {
     return {

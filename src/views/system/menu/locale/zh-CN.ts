@@ -15,6 +15,7 @@ export default {
   'menuSearch.searchTable.form.reset': '重置',
   'menuSearch.searchTable.form.selectDefault': '全部',
   'menuSearch.searchTable.operation.create': '新建',
+  'menuSearch.searchTable.operation.selectShowingColumn': '选择展示列',
   // 'menuSearch.searchTable.operation.import': '批量导入',
   // 'menuSearch.searchTable.operation.download': '下载',
   // 列名
