@@ -42,7 +42,7 @@
             </template>
           </a-button>
         </a-tooltip>
-        <a-dropdown trigger="click" @select="changeLocale as any">
+        <a-dropdown trigger="click" @select="changeLocale">
           <div ref="triggerBtn" class="trigger-btn"></div>
           <template #content>
             <a-doption
@@ -188,7 +188,6 @@
 
 <script lang="ts" setup>
   import { computed, ref, inject } from 'vue';
-  import { Message } from '@arco-design/web-vue';
   import { useDark, useToggle, useFullscreen } from '@vueuse/core';
   import { useAppStore, useUserStore } from '@/store';
   import { LOCALE_OPTIONS } from '@/locale';

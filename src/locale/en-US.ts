@@ -26,6 +26,8 @@ import locale500 from '@/views/exception/500/locale/en-US';
 import localeUserInfo from '@/views/user/info/locale/en-US';
 import localeUserSetting from '@/views/user/setting/locale/en-US';
 
+import localeMenu from '@/views/system/menu/locale/en-US';
+
 import localeSettings from './en-US/settings';
 
 export default {
@@ -33,6 +35,8 @@ export default {
   'menu.server.dashboard': 'Dashboard-Server',
   'menu.server.workplace': 'Workplace-Server',
   'menu.server.monitor': 'Monitor-Server',
+  'menu.server.system': 'system-management',
+  'menu.server.system.menu': 'menu-management',
   'menu.list': 'List',
   'menu.result': 'Result',
   'menu.exception': 'Exception',
@@ -64,4 +68,5 @@ export default {
   ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...localeMenu,
 };

@@ -24,6 +24,10 @@ export interface PostData {
 }
 
 export interface Pagination {
+  showTotal?: boolean;
+  showPageSize?: true;
+  pageSizeOptions?: number[];
+  showJumper?: true;
   current: number;
   pageSize: number;
   total?: number;
