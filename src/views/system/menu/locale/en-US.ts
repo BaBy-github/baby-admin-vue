@@ -19,6 +19,7 @@ export default {
     'Select Showing Column',
   // 'menuSearch.searchTable.operation.import': 'Import',
   // 'menuSearch.searchTable.operation.download': 'Download',
+  'menuSearch.searchTable.operation.batch.delete': 'Batch Delete',
   // columns
   'menuSearch.searchTable.columns.id': 'id',
   'menuSearch.searchTable.columns.name': 'name',

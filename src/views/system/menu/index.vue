@@ -103,6 +103,16 @@
             <!--                </a-button>-->
             <!--              </template>-->
             <!--            </a-upload>-->
+            <a-button
+              type="outline"
+              :disabled="selectedKeys.length === 0"
+              @click="onBatchDelete"
+            >
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('menuSearch.searchTable.operation.batch.delete') }}
+            </a-button>
           </a-space>
         </a-col>
         <a-col :span="8" style="text-align: right">
@@ -130,11 +140,14 @@
       </a-row>
       <!-- 数据列表-->
       <a-table
+        v-model:selectedKeys="selectedKeys"
         row-key="id"
         :loading="loading"
         :pagination="pagination"
         :data="renderData"
         :bordered="false"
+        :row-selection="rowSelection"
+        @selection-change="onSelectionChange"
         @page-change="onPageChange"
         @page-size-change="onPageSizeChange"
         @sorter-change="onSorterChange"
@@ -200,9 +213,41 @@
   import { computed, ref, reactive } from 'vue';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import { queryMenuList, MenuRecord, MenuParams } from '@/api/menu';
+  import {
+    queryMenuList,
+    MenuRecord,
+    MenuParams,
+    deleteMenusByIds,
+  } from '@/api/menu';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
+  import { Message, TableRowSelection } from '@arco-design/web-vue';
+  // 行选择
+  const rowSelection: TableRowSelection = {
+    type: 'checkbox',
+    showCheckedAll: true,
+    onlyCurrent: false,
+  };
+  // 行选择结果列表
+  const selectedKeys = ref<string[]>([]);
+  const onSelectionChange = (rowKeys: string[]) => {
+    selectedKeys.value = rowKeys;
+  };
+  // 批量操作
+  const onBatchDelete = async () => {
+    setLoading(true);
+    try {
+      const { data } = await deleteMenusByIds(selectedKeys.value.map(Number));
+      if (data.row) Message.success(`${data.row} rows of data are affected`);
+    } catch (err) {
+      // you can report use errorHandler or other
+    } finally {
+      setLoading(false);
+      await fetchData({
+        ...fetchDataParams(),
+      });
+    }
+  };
   // 列对象
   const columnsSelectedList = ref<string[]>([
     'id',

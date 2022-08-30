@@ -1,5 +1,4 @@
 import axios from 'axios';
-import qs from 'query-string';
 
 export interface MenuRecord {
   id: number;
@@ -29,4 +28,8 @@ export interface MenuListRes {
 
 export function queryMenuList(params: MenuParams) {
   return axios.post<MenuListRes>('/api/menus', params);
+}
+
+export function deleteMenusByIds(ids: number[]) {
+  return axios.post('/api/menus/deleteMenusByIds', { ids });
 }

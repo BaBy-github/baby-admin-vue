@@ -18,6 +18,7 @@ export default {
   'menuSearch.searchTable.operation.selectShowingColumn': '选择展示列',
   // 'menuSearch.searchTable.operation.import': '批量导入',
   // 'menuSearch.searchTable.operation.download': '下载',
+  'menuSearch.searchTable.operation.batch.delete': '批量删除',
   // 列名
   'menuSearch.searchTable.columns.id': 'id',
   'menuSearch.searchTable.columns.name': '名称',
