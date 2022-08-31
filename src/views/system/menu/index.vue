@@ -113,6 +113,13 @@
               </template>
               {{ $t('menuSearch.searchTable.operation.batch.delete') }}
             </a-button>
+
+            <a-button type="outline" @click="changeUpdateMode">
+              <template #icon>
+                <icon-edit />
+              </template>
+              {{ $t('menuSearch.searchTable.operation.batch.update') }}
+            </a-button>
           </a-space>
         </a-col>
         <a-col :span="8" style="text-align: right">
@@ -122,20 +129,20 @@
           <!--            </template>-->
           <!--            {{ $t('searchTable.operation.download') }}-->
           <!--          </a-button>-->
-          <a-popover position="lt">
-            <a-button class="button">
-              {{ $t('menuSearch.searchTable.operation.selectShowingColumn') }}
-            </a-button>
-            <template #content>
-              <a-checkbox-group
-                v-model="columnsSelectedList"
-                direction="vertical"
-                :options="columnsCheckboxOptions"
-                @change="onColumnsCheckboxChange"
-              >
-              </a-checkbox-group>
-            </template>
-          </a-popover>
+          <!--          <a-popover position="lt">-->
+          <!--            <a-button class="button">-->
+          <!--              {{ $t('menuSearch.searchTable.operation.selectShowingColumn') }}-->
+          <!--            </a-button>-->
+          <!--            <template #content>-->
+          <!--              <a-checkbox-group-->
+          <!--                v-model="columnsSelectedList"-->
+          <!--                direction="vertical"-->
+          <!--                :options="columnsCheckboxOptions"-->
+          <!--                @change="onColumnsCheckboxChange"-->
+          <!--              >-->
+          <!--              </a-checkbox-group>-->
+          <!--            </template>-->
+          <!--          </a-popover>-->
         </a-col>
       </a-row>
       <!-- 数据列表-->
@@ -146,64 +153,81 @@
         :pagination="pagination"
         :data="renderData"
         :bordered="false"
+        :columns="columns"
         :row-selection="rowSelection"
         @selection-change="onSelectionChange"
         @page-change="onPageChange"
         @page-size-change="onPageSizeChange"
         @sorter-change="onSorterChange"
       >
-        <template #columns>
-          <!-- menu id-->
-          <a-table-column
-            v-if="columnsSelectedList.includes('id')"
-            :sortable="{ sortDirections: ['ascend', 'descend'] }"
-            :title="$t('menuSearch.searchTable.columns.id')"
-            data-index="id"
+        <template v-if="updateMode" #name="{ record }">
+          <a-input
+            v-model="record.name"
+            @blur="onUpdateRow(record, 'name', record.name)"
           />
-          <!-- menu name名称-->
-          <a-table-column
-            v-if="columnsSelectedList.includes('name')"
-            :title="$t('menuSearch.searchTable.columns.name')"
-            data-index="name"
-          />
-          <!-- metaStr-->
-          <a-table-column
-            v-if="columnsSelectedList.includes('metaStr')"
-            :title="$t('menuSearch.searchTable.columns.metaStr')"
-            data-index="metaStr"
-          />
-          <!-- parentId-->
-          <a-table-column
-            v-if="columnsSelectedList.includes('parentId')"
-            :sortable="{ sortDirections: ['ascend', 'descend'] }"
-            :title="$t('menuSearch.searchTable.columns.parentId')"
-            data-index="parentId"
-          />
-          <!-- status-->
-          <a-table-column
-            v-if="columnsSelectedList.includes('status')"
-            :title="$t('menuSearch.searchTable.columns.status')"
-            data-index="status"
-          >
-            <template #cell="{ record }">
-              <span v-if="record.status === '0'" class="circle"></span>
-              <span v-else class="circle pass"></span>
-              {{ $t(`menuSearch.searchTable.form.status.${record.status}`) }}
-            </template>
-          </a-table-column>
-          <!-- operations-->
-          <a-table-column
-            v-if="columnsSelectedList.includes('operations')"
-            :title="$t('menuSearch.searchTable.columns.operations')"
-            data-index="operations"
-          >
-            <template #cell>
-              <a-button v-permission="['admin']" type="text" size="small">
-                {{ $t('menuSearch.searchTable.columns.operations.view') }}
-              </a-button>
-            </template>
-          </a-table-column>
         </template>
+        <template #status="{ record }">
+          <span v-if="record.status === '0'" class="circle"></span>
+          <span v-else class="circle pass"></span>
+          {{ $t(`menuSearch.searchTable.form.status.${record.status}`) }}
+        </template>
+        <template #operations>
+          <a-button v-permission="['admin']" type="text" size="small">
+            {{ $t('menuSearch.searchTable.columns.operations.view') }}
+          </a-button>
+        </template>
+        <!--        <template #columns>-->
+        <!--          &lt;!&ndash; menu id&ndash;&gt;-->
+        <!--          <a-table-column-->
+        <!--            v-if="columnsSelectedList.includes('id')"-->
+        <!--            :sortable="{ sortDirections: ['ascend', 'descend'] }"-->
+        <!--            :title="$t('menuSearch.searchTable.columns.id')"-->
+        <!--            data-index="id"-->
+        <!--          />-->
+        <!--          &lt;!&ndash; menu name名称&ndash;&gt;-->
+        <!--          <a-table-column-->
+        <!--            v-if="columnsSelectedList.includes('name')"-->
+        <!--            :title="$t('menuSearch.searchTable.columns.name')"-->
+        <!--            data-index="name"-->
+        <!--          />-->
+        <!--          &lt;!&ndash; metaStr&ndash;&gt;-->
+        <!--          <a-table-column-->
+        <!--            v-if="columnsSelectedList.includes('metaStr')"-->
+        <!--            :title="$t('menuSearch.searchTable.columns.metaStr')"-->
+        <!--            data-index="metaStr"-->
+        <!--          />-->
+        <!--          &lt;!&ndash; parentId&ndash;&gt;-->
+        <!--          <a-table-column-->
+        <!--            v-if="columnsSelectedList.includes('parentId')"-->
+        <!--            :sortable="{ sortDirections: ['ascend', 'descend'] }"-->
+        <!--            :title="$t('menuSearch.searchTable.columns.parentId')"-->
+        <!--            data-index="parentId"-->
+        <!--          />-->
+        <!--          &lt;!&ndash; status&ndash;&gt;-->
+        <!--          <a-table-column-->
+        <!--            v-if="columnsSelectedList.includes('status')"-->
+        <!--            :title="$t('menuSearch.searchTable.columns.status')"-->
+        <!--            data-index="status"-->
+        <!--          >-->
+        <!--            <template #cell="{ record }">-->
+        <!--              <span v-if="record.status === '0'" class="circle"></span>-->
+        <!--              <span v-else class="circle pass"></span>-->
+        <!--              {{ $t(`menuSearch.searchTable.form.status.${record.status}`) }}-->
+        <!--            </template>-->
+        <!--          </a-table-column>-->
+        <!--          &lt;!&ndash; operations&ndash;&gt;-->
+        <!--          <a-table-column-->
+        <!--            v-if="columnsSelectedList.includes('operations')"-->
+        <!--            :title="$t('menuSearch.searchTable.columns.operations')"-->
+        <!--            data-index="operations"-->
+        <!--          >-->
+        <!--            <template #cell>-->
+        <!--              <a-button v-permission="['admin']" type="text" size="small">-->
+        <!--                {{ $t('menuSearch.searchTable.columns.operations.view') }}-->
+        <!--              </a-button>-->
+        <!--            </template>-->
+        <!--          </a-table-column>-->
+        <!--        </template>-->
       </a-table>
     </a-card>
   </div>
@@ -218,10 +242,18 @@
     MenuRecord,
     MenuParams,
     deleteMenusByIds,
+    applyForUpdate,
   } from '@/api/menu';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import { Message, TableRowSelection } from '@arco-design/web-vue';
+  import {
+    TableColumnData,
+    TableData,
+  } from '@arco-design/web-vue/es/table/interface.d';
+  import { update } from '@/api/data';
+
+  const { t } = useI18n();
   // 行选择
   const rowSelection: TableRowSelection = {
     type: 'checkbox',
@@ -249,25 +281,73 @@
     }
   };
   // 列对象
-  const columnsSelectedList = ref<string[]>([
-    'id',
-    'name',
-    'metaStr',
-    'parentId',
-    'status',
-    'operations',
-  ]);
-  const columnsCheckboxOptions = [
-    { label: 'id', value: 'id' },
-    { label: 'name', value: 'name' },
-    { label: 'meta config', value: 'metaStr' },
-    { label: 'parentId', value: 'parentId' },
-    { label: 'status', value: 'status' },
-    { label: 'operations', value: 'operations' },
+  const baseColumns: TableColumnData[] = [
+    {
+      title: t('menuSearch.searchTable.columns.id'),
+      dataIndex: 'id',
+    },
+    {
+      title: t('menuSearch.searchTable.columns.name'),
+      dataIndex: 'name',
+      slotName: 'name',
+    },
+    {
+      title: t('menuSearch.searchTable.columns.metaStr'),
+      dataIndex: 'metaStr',
+    },
+    {
+      title: t('menuSearch.searchTable.columns.parentId'),
+      dataIndex: 'parentId',
+    },
+    {
+      title: t('menuSearch.searchTable.columns.status'),
+      dataIndex: 'status',
+      slotName: 'status',
+    },
+    {
+      title: t('menuSearch.searchTable.columns.operations'),
+      dataIndex: 'operations',
+      slotName: 'operations',
+    },
   ];
-  const onColumnsCheckboxChange = (value: string[]) => {
-    columnsSelectedList.value = value;
+  const columns = reactive([...baseColumns]);
+  // 选择的列对象
+  // const columnsSelectedList = ref<string[]>([
+  //   'id',
+  //   'name',
+  //   'metaStr',
+  //   'parentId',
+  //   'status',
+  //   'operations',
+  // ]);
+  const onUpdateRow = async (record: TableData, field: string, value: any) => {
+    const updateParams = {
+      id: record.id,
+      field,
+      value,
+      updateOperateToken: updateOperateTokenRef.value,
+    };
+    await update(updateParams);
   };
+  // const columnsCheckboxOptions = [
+  //   { label: 'id', value: 'id' },
+  //   { label: 'name', value: 'name' },
+  //   { label: 'meta config', value: 'metaStr' },
+  //   { label: 'parentId', value: 'parentId' },
+  //   { label: 'status', value: 'status' },
+  //   { label: 'operations', value: 'operations' },
+  // ];
+  // const onColumnsCheckboxChange = (value: string[]) => {
+  //   columnsSelectedList.value = value;
+  //   console.log(
+  //     'baseColumns.filter',
+  //     baseColumns.filter((c) => value.indexOf(String(c.dataIndex)) !== -1)
+  //   );
+  //   columns = reactive(
+  //     baseColumns.filter((c) => value.indexOf(String(c.dataIndex)) !== -1)
+  //   );
+  //   console.log('columns', columns);
+  // };
   // 初始化查询表单信息
   const generateFormModel = () => {
     return {
@@ -278,7 +358,6 @@
     };
   };
   const { loading, setLoading } = useLoading(true);
-  const { t } = useI18n();
   const renderData = ref<MenuRecord[]>([]);
   const formModel = ref(generateFormModel());
   const basePagination: Pagination = {
@@ -365,6 +444,16 @@
       ...fetchDataParams(),
       current,
     });
+  };
+  // 更新
+  const updateMode = ref<boolean>(false);
+  const updateOperateTokenRef = ref<string>('');
+  const changeUpdateMode = async () => {
+    updateMode.value = !updateMode.value;
+    if (updateMode.value) {
+      const { data } = await applyForUpdate();
+      updateOperateTokenRef.value = data.updateOperateToken;
+    }
   };
   // 分页大小改变
   const onPageSizeChange = (pageSize: number) => {

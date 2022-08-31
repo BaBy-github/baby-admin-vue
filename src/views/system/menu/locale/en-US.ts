@@ -20,6 +20,7 @@ export default {
   // 'menuSearch.searchTable.operation.import': 'Import',
   // 'menuSearch.searchTable.operation.download': 'Download',
   'menuSearch.searchTable.operation.batch.delete': 'Batch Delete',
+  'menuSearch.searchTable.operation.batch.update': 'Update',
   // columns
   'menuSearch.searchTable.columns.id': 'id',
   'menuSearch.searchTable.columns.name': 'name',

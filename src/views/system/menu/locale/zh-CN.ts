@@ -19,6 +19,7 @@ export default {
   // 'menuSearch.searchTable.operation.import': '批量导入',
   // 'menuSearch.searchTable.operation.download': '下载',
   'menuSearch.searchTable.operation.batch.delete': '批量删除',
+  'menuSearch.searchTable.operation.batch.update': '编辑',
   // 列名
   'menuSearch.searchTable.columns.id': 'id',
   'menuSearch.searchTable.columns.name': '名称',

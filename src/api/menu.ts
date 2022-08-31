@@ -33,3 +33,7 @@ export function queryMenuList(params: MenuParams) {
 export function deleteMenusByIds(ids: number[]) {
   return axios.post('/api/menus/deleteMenusByIds', { ids });
 }
+
+export function applyForUpdate() {
+  return axios.get('/api/menus/applyForUpdate');
+}
