@@ -160,11 +160,8 @@
         @page-size-change="onPageSizeChange"
         @sorter-change="onSorterChange"
       >
-        <template v-if="updateMode" #name="{ record }">
-          <a-input
-            v-model="record.name"
-            @blur="onUpdateRow(record, 'name', record.name)"
-          />
+        <template v-if="updateMode" #name="{ record, rowIndex }">
+          <a-input v-model="record.name" @blur="onUpdateRow(rowIndex)" />
         </template>
         <template #status="{ record }">
           <span v-if="record.status === '0'" class="circle"></span>
@@ -242,16 +239,12 @@
     MenuRecord,
     MenuParams,
     deleteMenusByIds,
-    applyForUpdate,
+    updateRow,
   } from '@/api/menu';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import { Message, TableRowSelection } from '@arco-design/web-vue';
-  import {
-    TableColumnData,
-    TableData,
-  } from '@arco-design/web-vue/es/table/interface.d';
-  import { update } from '@/api/data';
+  import { TableColumnData } from '@arco-design/web-vue/es/table/interface.d';
 
   const { t } = useI18n();
   // 行选择
@@ -320,14 +313,9 @@
   //   'status',
   //   'operations',
   // ]);
-  const onUpdateRow = async (record: TableData, field: string, value: any) => {
-    const updateParams = {
-      id: record.id,
-      field,
-      value,
-      updateOperateToken: updateOperateTokenRef.value,
-    };
-    await update(updateParams);
+  const onUpdateRow = async (rowIndex: number) => {
+    const { data } = await updateRow(renderData.value[rowIndex]);
+    if (data.row) Message.success(`${data.row} rows of data are affected`);
   };
   // const columnsCheckboxOptions = [
   //   { label: 'id', value: 'id' },
@@ -447,13 +435,8 @@
   };
   // 更新
   const updateMode = ref<boolean>(false);
-  const updateOperateTokenRef = ref<string>('');
   const changeUpdateMode = async () => {
     updateMode.value = !updateMode.value;
-    if (updateMode.value) {
-      const { data } = await applyForUpdate();
-      updateOperateTokenRef.value = data.updateOperateToken;
-    }
   };
   // 分页大小改变
   const onPageSizeChange = (pageSize: number) => {
