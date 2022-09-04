@@ -46,7 +46,7 @@
           <a-checkbox
             checked="rememberPassword"
             :model-value="loginConfig.rememberPassword"
-            @change="(setRememberPassword as any)"
+            @change="setRememberPassword;"
           >
             {{ $t('login.form.rememberPassword') }}
           </a-checkbox>
@@ -110,6 +110,7 @@
           },
         });
         Message.success(t('login.form.login.success'));
+        Message.loading(t('login.form.login.success.loadingPage'));
         const { rememberPassword } = loginConfig.value;
         const { username, password } = values;
         // 实际生产环境需要进行加密存储。

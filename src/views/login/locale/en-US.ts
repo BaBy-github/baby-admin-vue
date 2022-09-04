@@ -4,6 +4,7 @@ export default {
   'login.form.password.errMsg': 'Password cannot be empty',
   'login.form.login.errMsg': 'Login error, refresh and try again',
   'login.form.login.success': 'welcome to use',
+  'login.form.login.success.loadingPage': 'loading page',
   'login.form.userName.placeholder': 'Username: admin',
   'login.form.password.placeholder': 'Password: admin',
   'login.form.rememberPassword': 'Remember password',
