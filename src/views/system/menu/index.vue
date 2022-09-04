@@ -160,7 +160,10 @@
         @page-size-change="onPageSizeChange"
         @sorter-change="onSorterChange"
       >
-        <template v-if="updateMode" #name="{ record, rowIndex }">
+        <template
+          v-if="updateMode && allowUpdateFieldNameArray.includes('name')"
+          #name="{ record, rowIndex }"
+        >
           <a-input v-model="record.name" @blur="onUpdateRow(rowIndex)" />
         </template>
         <template #status="{ record }">
@@ -240,6 +243,7 @@
     MenuParams,
     deleteMenusByIds,
     updateRow,
+    getAllowUpdateFieldNameArray,
   } from '@/api/menu';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
@@ -313,6 +317,8 @@
   //   'status',
   //   'operations',
   // ]);
+  // 允许修改的列
+  const allowUpdateFieldNameArray = ref<string[]>([]);
   const onUpdateRow = async (rowIndex: number) => {
     const { data } = await updateRow(renderData.value[rowIndex]);
     if (data.row) Message.success(`${data.row} rows of data are affected`);
@@ -437,6 +443,10 @@
   const updateMode = ref<boolean>(false);
   const changeUpdateMode = async () => {
     updateMode.value = !updateMode.value;
+    if (!allowUpdateFieldNameArray.value.length) {
+      const { data } = await getAllowUpdateFieldNameArray();
+      allowUpdateFieldNameArray.value = data;
+    }
   };
   // 分页大小改变
   const onPageSizeChange = (pageSize: number) => {

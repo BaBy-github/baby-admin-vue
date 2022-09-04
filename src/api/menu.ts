@@ -37,3 +37,7 @@ export function deleteMenusByIds(ids: number[]) {
 export function updateRow(params: MenuRecord) {
   return axios.post('/api/menus/update', params);
 }
+
+export function getAllowUpdateFieldNameArray() {
+  return axios.get<string[]>('/api/menus/allowUpdateFieldNameArray');
+}
